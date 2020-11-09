@@ -56,7 +56,7 @@
       :items-per-page="pagesize"
       class="dataCorpus"
       >
-      <template>
+      <template v-slot:item.actions="{ item }">
         <router-link :to="'/restaurant/' + item._id">
         <v-icon
           small
