@@ -48,16 +48,17 @@
         :headers="headers"
         :items="restaurants"
         :search="search"
-        loading="true"
-      loading-text="CHARGEZ !!!! - Napoléon"
+        :loading="true"
+        loading-text="ça charge M. Buffa"
       :single-expand=true
       item-key="name"
       show-expand
       :items-per-page="pagesize"
       class="dataCorpus"
       >
+      <v-progress-linear v-show="load" slot="progress" color="blue" indeterminate></v-progress-linear>
       <template v-slot:item.actions="{ item }">
-        <router-link :to="'/restaurant/' + item._id">
+        <router-link style="text-decoration: none;" :to="'/restaurant/' + item._id">
         <v-icon
           small
           class="mr-2"
@@ -72,7 +73,7 @@
           mdi-delete
         </v-icon>
       </template>
-      <v-progress-linear v-show="load" slot="progress" color="blue" indeterminate></v-progress-linear>
+      
       <template v-slot:expanded-item="{ item }">
         <td :colspan="headers.length">
           <br>
@@ -81,7 +82,7 @@
             <v-col>
               <GmapMap 
               :center="{lat:item.address.coord[1], lng:item.address.coord[0]}" 
-              :zoom="15" map-type-id="terrain"
+              :zoom="15" map-type-id="roadmap"
                 style="width: 500px; height: 300px"
               >
               <GmapMarker :position="{lat:item.address.coord[1], lng:item.address.coord[0]}"
@@ -231,28 +232,6 @@ export default {
 
         this.nom = "";
         this.cuisine = "";
-      },
-      getColor(index) {
-        return index % 2 ? "lightBlue" : "pink";
-      },
-      getAlternateLabel (count) {
-        return `${count} restaurant(s)selected`
-      },
-      onSelect (items) {
-        if(items[0] === undefined)
-          return;
-        this.selected = items[0]._id;
-      },
-      setPlace(place) {
-        this.currentPlace = place;
-      },
-      geolocate: function() {
-        navigator.geolocation.getCurrentPosition(position => {
-          this.center = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          };
-        });
       }
     }
 }
