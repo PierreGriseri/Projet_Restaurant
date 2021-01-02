@@ -128,7 +128,7 @@ export default {
     }),
     mounted() {
       console.log("AVANT AFFICHAGE");
-      this.getRestaurantsFromServer(10);
+      this.getRestaurantsFromServer();
     },
     watch: {
       nbRestaurantsTotal() {
@@ -143,7 +143,7 @@ export default {
         if (this.page === 0) return;
 
         this.page--;
-        this.getRestaurantsFromServer(this.nbRestaurantsTotal);
+        this.getRestaurantsFromServer();
       },
       pageSuivante() {
         if (this.page === this.dernierePage) return;
@@ -153,10 +153,10 @@ export default {
       // coucou() {
       //   console.log([...new Set(this.restaurants.cuisine)]);
       // },
-      getRestaurantsFromServer(pagesize) {
+      getRestaurantsFromServer() {
         let url = "http://localhost:8080/api/restaurants?";
         url += "page=" + this.page;
-        url += "&pagesize=" + pagesize;
+        url += "&pagesize=" + this.pagesizepagesize;
         url += "&name=" + this.nomRestauRecherche;
 
 
@@ -181,7 +181,7 @@ export default {
       },
       chercherRestaurants: _.debounce(
         function () {
-          this.getRestaurantsFromServer(this.pagesize);
+          this.getRestaurantsFromServer();
         }, 300),
       supprimerRestaurant(r) {
         let url = "http://localhost:8080/api/restaurants/" + r;
@@ -195,7 +195,7 @@ export default {
                 console.log(resJS.msg);
                 this.msg = resJS.msg;
                 // On rafraichit la vue
-                this.getRestaurantsFromServer(this.pagesize);
+                this.getRestaurantsFromServer();
               });
             })
             .catch(function (err) {
@@ -223,7 +223,7 @@ export default {
               console.log(resJS.msg);
               this.msg = resJS.msg;
               // On rafraichit la vue
-              this.getRestaurantsFromServer(this.pagesize);
+              this.getRestaurantsFromServer();
             });
           })
           .catch(function (err) {
